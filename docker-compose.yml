@@ -17,6 +17,10 @@ services:
       - 'mysql-data:/var/lib/mysql'
     networks:
       - docker-exam
+  frontend:
+    build: './frontend'
+    ports: 
+      - '4000:3000'
 volumes:
   mysql-data:
 networks:
