@@ -8,11 +8,12 @@ services:
       - mysql
     networks:
       - docker-exam
+    env_file:
+      - '.env'
   mysql:
     image: mysql:latest
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=todolist
+    env_file:
+      - '.env'
     volumes:
       - 'mysql-data:/var/lib/mysql'
     networks:
