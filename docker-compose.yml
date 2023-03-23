@@ -4,3 +4,20 @@ services:
     build: './backend'
     ports:
       - '4001:4001'
+    depends_on:
+      - mysql
+    networks:
+      - docker-exam
+  mysql:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=todolist
+    volumes:
+      - 'mysql-data:/var/lib/mysql'
+    networks:
+      - docker-exam
+volumes:
+  mysql-data:
+networks:
+  docker-exam:

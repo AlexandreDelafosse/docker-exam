@@ -12,6 +12,13 @@ const db = require("knex")({
   },
 });
 
+db.schema.createTableIfNotExists("todos", (table) => {
+  table.bigIncrements("id").primary()
+  table.text("description").notNullable()
+  table.text("name").notNullable()
+  table.boolean("done").defaultTo(false)
+}).then();  
+
 const cors = require("cors");
 const app = express();
 
@@ -20,16 +27,35 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/todos", async (req, res) => {
-  //TO_MODIFY
-  res.send([]) // to remove after question 1)
+  db.select('*').from('todos').then((data) => {
+    res.send(data)
+  })
 });
 
 app.post("/todos", async (req, res) => {
-  //TO_MODIFY
+  const { name, description } = req.body;
+
+  db('todos').insert({name, description})
+    .then(() => {
+      res.send('Todo added successfully');
+    })
+    .catch((err) => {
+      console.log(err);
+      res.send('Unable to add todo');
+    });
 });
 
 app.delete("/todos/:todoId", async (req, res) => {
-  //TO_MODIFY
+  const todoId = req.params.todoId;
+
+  db('todos').where({id: todoId}).del()
+    .then(() => {
+      res.send(`Todo ${todoId} deleted successfully`);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.send('Unable to delete todo');
+    });
 });
 
 app.listen(port, () => {
