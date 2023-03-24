@@ -4,7 +4,7 @@ const BASE_URL = 'http://localhost:4001';
 
 export const getTodos = async () => {
   const response = await axios.get(`${BASE_URL}/todos`);
-  return response.data;
+  return response;
 };
 
 export const createTodo = async (formData) => {
